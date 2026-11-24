@@ -13,7 +13,7 @@
 - No iniciar la siguiente fase si el núcleo de la fase anterior no es estable.
 
 ## Fase 0 — Preparación del repositorio
-- Documentación de visión, arquitectura, agencia, roadmap e instrucciones.
+- Documentación de visión, arquitectura, agencia, UX, roadmap e instrucciones.
 - Convenciones de código y seguridad.
 - Estructura mínima de proyecto.
 - Configuración de entorno de desarrollo.
@@ -146,12 +146,14 @@ No incluir todavía interfaz gráfica, cámara, control de mouse, voz ni ejecuci
 - Políticas de aprobación.
 **Aceptación:** completar una tarea autorizada de varios pasos, recuperarse de un fallo y registrar cada acción.
 
-## Fase 14 — DESKTOP / HUD
+## Fase 14 — DESKTOP / ADAPTIVE HUD
 - Aplicación de escritorio.
-- Interfaz minimalista y modo HUD.
+- Interfaz adaptativa conforme a `docs/UX_SPEC.md`.
+- Espacios de trabajo contextuales según tarea.
+- Modos minimalista y HUD bajo el mismo principio adaptativo.
 - Actividad, tareas, permisos y estado de sensores.
 - Controles de emergencia.
-**Aceptación:** UI conectada al backend real, no una maqueta con datos falsos.
+**Aceptación:** al menos tres tipos de tareas producen espacios contextuales distintos; la UI se conecta al backend real, conserva estado, no usa datos falsos y sus controles operativos se prueban.
 
 ## Fase 15 — MOBILE & CLOUD
 - Acceso desde celular.
