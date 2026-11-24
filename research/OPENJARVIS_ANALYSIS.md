@@ -149,3 +149,144 @@ OpenJarvis se adoptará como dependencia/base únicamente si la prueba demuestra
 - Guía de instalación: https://github.com/open-jarvis/OpenJarvis/blob/main/docs/getting-started/installation.md
 
 **Nota:** investigación inicial de documentación; no se ha instalado, ejecutado ni auditado el código de OpenJarvis en el PC del propietario. Las capacidades descritas son las que declaran las fuentes oficiales y requieren validación práctica antes de decidir una integración.
+
+
+---
+
+# Segunda revisión — Funciones adicionales y evaluación de integración
+
+**Fecha:** 24-11-2026  
+**Alcance:** revisión ampliada de documentación oficial actual. No se ejecutó el proyecto ni se inspeccionó cada línea del código fuente.
+
+## 11. Hallazgo importante: sistema de Skills
+
+OpenJarvis incorpora un sistema de habilidades extensible. Una skill puede contener instrucciones en `SKILL.md`, una secuencia estructurada de pasos en `skill.toml`, o ambos.
+
+Características documentadas:
+- Importar skills desde Hermes Agent, OpenClaw y repositorios GitHub.
+- Mostrar un catálogo ligero de skills disponibles al agente.
+- Permitir que el agente decida cuándo invocar una skill.
+- Componer skills como subprocesos, con validación de ciclos y profundidad.
+- Restringir herramientas disponibles por skill.
+- Comprobar capacidades, aplicar límites y registrar eventos de auditoría.
+- Descubrir secuencias recurrentes en trazas y proponerlas como skills.
+- Optimizar descripciones y ejemplos mediante DSPy o GEPA.
+- Desactivar por defecto la importación de scripts ejecutables de algunas fuentes salvo que se habilite expresamente.
+
+**Valor para M.I.L.O.: muy alto.** Podemos estudiar un catálogo de habilidades para que M.I.L.O. aprenda flujos reutilizables de la agencia: preparar un proyecto, analizar requisitos, revisar un repositorio, generar pruebas o preparar una entrega. No debemos importar habilidades sin revisar su procedencia, permisos y contenido.
+
+Fuente: https://open-jarvis.github.io/OpenJarvis/user-guide/skills/
+
+## 12. Canales de mensajería: WhatsApp
+
+OpenJarvis documenta un sistema de canales conectables. Entre ellos:
+- WhatsApp Business Cloud API.
+- WhatsApp mediante Baileys.
+- Telegram.
+- Discord.
+- Slack.
+- Webhooks y otros canales.
+
+El canal Baileys se conecta mediante un puente Node.js, permite recibir y enviar mensajes y conserva el estado de autenticación. La documentación aclara que funciona mediante el protocolo de WhatsApp Web y requiere autenticación QR. El adaptador de WhatsApp Cloud API se documenta como send-only en la referencia consultada.
+
+**Valor para M.I.L.O. AGENCY: alto, pero con una decisión técnica pendiente.** No asumir que el canal Baileys es equivalente a una integración oficial de WhatsApp Business. Para una operación comercial real hay que evaluar condiciones de plataforma, estabilidad, privacidad y soporte; preferir una integración oficial cuando el caso de uso lo requiera.
+
+Fuentes:
+- https://open-jarvis.github.io/OpenJarvis/user-guide/channels/
+- https://open-jarvis.github.io/OpenJarvis/api-reference/openjarvis/channels/whatsapp/
+
+## 13. Seguridad y permisos
+
+OpenJarvis documenta varias capas:
+- Escaneo del equipo anfitrión.
+- Revisión de límites entre datos locales y servicios externos.
+- Escaneo de entradas y salidas para secretos, datos personales y rutas sensibles.
+- Registro de auditoría.
+- Configuración para advertir, redactar o bloquear hallazgos.
+- Envoltorio de guardrails que puede colocarse delante de distintos motores de inferencia.
+
+**Advertencia importante encontrada en la documentación:** la opción `enforce_tool_confirmation` aparece aceptada por el cargador de configuración, pero la propia documentación indica que actualmente no está aplicada de forma efectiva. Por tanto, no se debe asumir que activar esa opción garantiza confirmación antes de cada herramienta. M.I.L.O. tendría que implementar su propio control de permisos y aprobaciones en el runtime, y probarlo.
+
+Fuente: https://open-jarvis.github.io/OpenJarvis/user-guide/security/
+
+## 14. Aplicación de escritorio
+
+OpenJarvis dispone de una aplicación nativa de escritorio basada en Tauri/React, con instaladores para Windows x64 y otras plataformas. La aplicación abre la misma experiencia de chat que la interfaz web, muestra telemetría y consumo energético y puede permanecer accesible desde la bandeja del sistema.
+
+El backend sigue siendo un proceso separado que debe iniciarse en el equipo.
+
+**Conclusión:** tener un instalador de escritorio no significa tener una interfaz adaptativa. La experiencia descrita sigue centrada en chat y telemetría; M.I.L.O. debe diseñar su propia experiencia contextual.
+
+Fuente: https://open-jarvis.github.io/OpenJarvis/downloads/
+
+## 15. Compatibilidad y requisitos: implicaciones para el PC del propietario
+
+La guía de instalación actual indica Python 3.11–3.13, uv, Git y Rust para el entorno principal. Node.js 22+ es necesario para la interfaz web y el puente Baileys. También se documenta instalación nativa en Windows, además de WSL2.
+
+El hardware previamente reportado por el propietario incluye Intel i5-11400H, 16 GB de RAM y una NVIDIA RTX 3050 cuyo identificador completo no está confirmado. Esto no basta para asegurar qué modelos locales serán prácticos: antes se debe consultar VRAM exacta, memoria disponible, espacio libre y temperatura/rendimiento bajo carga.
+
+Fuentes:
+- https://open-jarvis.github.io/OpenJarvis/getting-started/installation/
+- https://open-jarvis.github.io/OpenJarvis/getting-started/windows-native/
+
+## 16. Arquitectura recomendada para M.I.L.O. tras la segunda revisión
+
+No recomiendo convertir OpenJarvis en toda la aplicación M.I.L.O. La separación aconsejada es:
+
+1. **MILO EXPERIENCE:** interfaz adaptativa propia, voz, HUD y espacios de trabajo contextuales.
+2. **MILO CORE:** identidad, contexto, memoria de producto, permisos, auditoría y ciclo de tareas.
+3. **AI ADAPTER LAYER:** contrato propio para modelos locales y cloud; OpenJarvis podría evaluarse como implementación/adaptador de agentes e inferencia, no como dependencia obligatoria.
+4. **AGENT & SKILL RUNTIME:** agentes especializados, skills revisadas, composición de tareas y ejecución aislada.
+5. **TOOL GATEWAY:** herramientas del PC, archivos, documentos, navegador, cámara y canales, cada una con permisos y registro.
+6. **MILO AGENCY:** clientes, proyectos, requisitos, planificación, entregas y soporte; separado del runtime genérico de agentes.
+7. **CONNECTORS:** WhatsApp y otros canales mediante adaptadores intercambiables.
+
+La UI no debe hablar directamente con herramientas privilegiadas. Debe comunicarse con el backend de M.I.L.O.; el backend verifica identidad, permisos, límites y aprobaciones antes de ejecutar una acción.
+
+## 17. Matriz de capacidades revisada
+
+| Área | Evidencia en OpenJarvis | Evaluación para M.I.L.O. |
+|---|---|---|
+| Modelos locales y cloud | Documentado | Evaluar como adaptador |
+| Agentes multi-paso | Documentado | Evaluar e integrar si pasa pruebas |
+| Skills importables y componibles | Documentado | Referencia prioritaria |
+| Programación con ejecución de código | Documentado | Probar aislado |
+| Memoria y recuperación documental | Documentado | Evaluar y comparar |
+| Tareas programadas/monitorización | Documentado | Reutilización posible |
+| WhatsApp y otros canales | Documentado | Evaluar canal y condiciones |
+| Seguridad y auditoría | Documentado, con límites | No delegar todas las garantías |
+| Escritorio Windows | Documentado | No resuelve el diseño adaptativo |
+| Cámara y gestos en vivo | No confirmado | Requiere módulo aparte |
+| Visión continua de pantalla | No confirmado | Requiere módulo aparte |
+| Control universal mouse/teclado | No confirmado | Requiere módulo aparte |
+| Voz conversacional continua | No confirmado en la documentación consultada | Requiere módulo aparte |
+| Gestión integral de agencia | No es su objetivo principal | Construir en MILO AGENCY |
+
+## 18. Próxima fase de investigación: prueba técnica, no más suposiciones
+
+La siguiente actividad debe ser una prueba de concepto controlada en Windows, sin conceder acceso general al equipo:
+
+- Preparar un entorno separado de pruebas.
+- Instalar OpenJarvis siguiendo la guía oficial y verificar versiones.
+- Ejecutar diagnóstico y registrar hardware/modelos recomendados.
+- Probar chat local, agente orchestrator y un modelo cloud opcional.
+- Probar una skill instructiva y otra estructurada, revisando antes sus permisos.
+- Probar lectura y creación de archivos solo dentro de una carpeta de prueba.
+- Probar programación de una tarea inocua y comprobar su persistencia.
+- Revisar cómo se registran trazas, errores y llamadas a herramientas.
+- Verificar el comportamiento real de guardrails y aprobaciones; no confiar en una opción de configuración sin prueba.
+- Medir RAM, VRAM, latencia y estabilidad.
+- Revisar licencia del proyecto y de cualquier componente/skill antes de incorporarlo.
+
+**No instalar ni ejecutar todavía con acceso general a documentos personales, credenciales, producción o cuentas comerciales.** La decisión de adopción se toma después de los resultados.
+
+## 19. Fuentes oficiales añadidas
+
+- Skills: https://open-jarvis.github.io/OpenJarvis/user-guide/skills/
+- Channels: https://open-jarvis.github.io/OpenJarvis/user-guide/channels/
+- Security: https://open-jarvis.github.io/OpenJarvis/user-guide/security/
+- Desktop downloads: https://open-jarvis.github.io/OpenJarvis/downloads/
+- Windows native: https://open-jarvis.github.io/OpenJarvis/getting-started/windows-native/
+- Installation: https://open-jarvis.github.io/OpenJarvis/getting-started/installation/
+
+**Estado de la investigación:** revisión documental ampliada. Sigue pendiente la prueba de ejecución en el PC. No se afirma que OpenJarvis ya haya sido instalado, ejecutado o validado en el entorno del propietario.
