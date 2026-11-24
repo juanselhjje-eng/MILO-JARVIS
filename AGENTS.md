@@ -7,9 +7,10 @@ Estas instrucciones aplican a Codex, Claude Code, ChatGPT, otros agentes y colab
 Lee obligatoriamente:
 1. `README.md`
 2. `docs/MASTER_SPEC.md`
-3. `docs/ARCHITECTURE.md`
-4. `docs/AGENCY.md`
-5. `docs/ROADMAP.md`
+3. `docs/UX_SPEC.md`
+4. `docs/ARCHITECTURE.md`
+5. `docs/AGENCY.md`
+6. `docs/ROADMAP.md`
 
 No empieces a programar basándote únicamente en el último mensaje del chat. Estos documentos son el contexto persistente del proyecto.
 
@@ -39,6 +40,19 @@ No empieces a programar basándote únicamente en el último mensaje del chat. E
 13. No despliegues, borres datos ni modifiques producción sin aprobación explícita.
 14. Respeta separación de datos entre clientes y proyectos.
 15. Mantén cambios pequeños, revisables y documentados.
+
+## Requisitos obligatorios de interfaz
+
+- La interfaz principal de M.I.L.O. es **adaptativa**: debe transformarse según la tarea y el contexto.
+- No entregar un dashboard genérico con sidebar o menús permanentes como protagonista.
+- No usar siempre la misma composición para todas las actividades.
+- Mostrar paneles, herramientas y controles contextuales; conservar una estructura mínima solo cuando sea útil.
+- No crear datos ficticios, actividad simulada ni controles que aparenten ser funcionales.
+- Todo control presentado como funcional debe conectarse a una operación real o indicar claramente que está pendiente/no disponible.
+- Preservar el estado de tareas y el contexto al cambiar de espacio.
+- Mostrar estados reales y permitir pausa/cancelación cuando esas capacidades estén implementadas.
+- Respetar los modos minimalista y HUD sin convertir los efectos visuales en prioridad.
+- Leer y cumplir `docs/UX_SPEC.md`. Los detalles visuales todavía pendientes no deben inventarse como decisiones del propietario.
 
 ## Protocolo de trabajo por tarea
 
