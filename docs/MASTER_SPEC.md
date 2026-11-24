@@ -35,12 +35,28 @@ Modo de operación confirmado:
 - No se exige que esté ejecutándose permanentemente cuando el propietario no lo haya activado.
 - Debe poder detenerse rápidamente y mostrar cuándo utiliza cámara, micrófono, pantalla o control del PC.
 
-Interfaz:
-- Dos modos complementarios: una interfaz minimalista para uso cotidiano y una interfaz futurista tipo HUD inspirada en pantallas de ciencia ficción.
-- La interfaz futurista debe incluir paneles, estado de tareas, actividad, cámara/pantalla cuando estén activas, proyectos y controles.
-- No se debe sacrificar la estabilidad del núcleo por construir primero animaciones o efectos visuales.
+## 4. Interfaz y experiencia de usuario
 
-## 4. Capacidades personales deseadas
+**Decisión confirmada: interfaz adaptativa (adaptive).**
+
+La interfaz principal debe transformarse según lo que el usuario esté haciendo. No tendrá menús permanentes como protagonistas ni un dashboard genérico que muestre siempre la misma composición.
+
+Requisitos:
+- Mostrar de forma contextual los paneles, herramientas, controles e información relevantes para la tarea actual.
+- Mantener una forma clara de conversar con M.I.L.O. y acceder a controles esenciales.
+- Preservar el contexto, el estado de las tareas y la orientación del usuario al cambiar de espacio.
+- Evitar paneles irrelevantes, datos ficticios y controles que aparenten funcionar.
+- Mantener una estructura base mínima si es necesaria, sin convertirla en el foco.
+- Los modos minimalista y HUD futurista deben seguir el mismo principio adaptativo.
+- La interfaz debe priorizar funcionalidad real, claridad, rendimiento y accesibilidad por encima de efectos visuales.
+
+Ejemplos de adaptación: un espacio de desarrollo cuando se programa, uno de análisis al revisar documentos, una vista contextual de cliente/proyecto en MILO AGENCY y una vista de progreso al ejecutar tareas en segundo plano. Son ejemplos conceptuales, no diseños finales.
+
+La composición exacta, navegación, ventanas, transiciones y controles persistentes siguen pendientes de análisis. No inventar esos detalles.
+
+**Especificación detallada:** [docs/UX_SPEC.md](UX_SPEC.md).
+
+## 5. Capacidades personales deseadas
 
 ### Conversación e inteligencia
 - Conversación natural por voz y texto.
@@ -76,7 +92,7 @@ Debe poder extraer y analizar contenido de, como mínimo:
 - Archivos de texto, Markdown, CSV y código.
 Debe informar si un documento está escaneado, protegido, dañado o requiere OCR.
 
-## 5. Inteligencia artificial: decisión confirmada
+## 6. Inteligencia artificial: decisión confirmada
 
 Estrategia **híbrida**:
 - Modelos gratuitos en la nube cuando estén disponibles y sean adecuados.
@@ -88,7 +104,7 @@ Estrategia **híbrida**:
 
 No asumir que un modelo o endpoint gratuito será siempre gratuito, estable o ilimitado. El sistema debe poder funcionar con límites y degradarse de forma controlada si no hay proveedor disponible.
 
-## 6. M.I.L.O. y la agencia de programación
+## 7. M.I.L.O. y la agencia de programación
 
 M.I.L.O. tiene dos grandes divisiones:
 1. **MILO PERSONAL:** asistente personal, voz, visión, memoria, PC y organización.
@@ -114,7 +130,7 @@ Esto significa:
 - Debe informar avances, resultados, errores, decisiones relevantes y bloqueos.
 - Debe solicitar aprobación para operaciones críticas o fuera del alcance autorizado.
 
-## 7. Principios de seguridad y límites de autonomía
+## 8. Principios de seguridad y límites de autonomía
 
 La autonomía nunca significa acceso ilimitado.
 
@@ -130,7 +146,7 @@ La autonomía nunca significa acceso ilimitado.
 - La cámara, el micrófono y la captura de pantalla deben tener indicadores visibles y controles explícitos.
 - No realizar acciones de seguridad ofensiva; el trabajo de seguridad de la agencia será defensivo y autorizado.
 
-## 8. Hardware conocido para orientar el diseño
+## 9. Hardware conocido para orientar el diseño
 
 El equipo reportado anteriormente por el propietario:
 - Windows 10 Home Single Language.
@@ -141,7 +157,7 @@ El equipo reportado anteriormente por el propietario:
 
 Tratar estos datos como referencia previa, no como diagnóstico actual. Antes de optimizar rendimiento o seleccionar modelos locales, ejecutar un diagnóstico actualizado. Diseñar para que visión, voz y modelos locales puedan limitar recursos o apagarse por separado.
 
-## 9. Qué significa que M.I.L.O. sea realmente funcional
+## 10. Qué significa que M.I.L.O. sea realmente funcional
 
 Una capacidad solo se considera implementada cuando:
 1. Tiene una implementación real, no una respuesta simulada.
@@ -154,7 +170,7 @@ Una capacidad solo se considera implementada cuando:
 
 No usar interfaces de demostración, datos falsos, funciones vacías ni respuestas simuladas para aparentar capacidades terminadas.
 
-## 10. Criterio de producto
+## 11. Criterio de producto
 
 M.I.L.O. debe sentirse como un sistema coherente, no como una colección desordenada de scripts o agentes. Debe compartir identidad, memoria controlada, estado de tareas, herramientas y permisos entre sus módulos.
 
